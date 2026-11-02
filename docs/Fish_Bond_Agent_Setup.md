@@ -2,7 +2,7 @@
 
 The browser connects directly to the supplied public agent `e8434f5b6cc646c4b426c07d01ebfd72` using `AgentSession.start({agentId, microphone:false, ...})`. Fish owns both Bond's reasoning and voice. Typed orders and automatically sent speech transcripts use `sendUserMessage(text, {audio:true})`; there is no parser or separate Bond TTS in the active command flow. Sound off mutes SDK output while retaining captions.
 
-In the Fish console, keep Public access enabled. If restricting origins, allow `http://127.0.0.1:5174` and your eventual deployment origin. Bond's voice is the voice already selected on the agent; `FISH_BOND_VOICE_ID` is unnecessary for this flow. An API key is only needed for optional standalone Fish transcription ; the public guard also uses its configured voice without credentials.
+In the Fish console, keep Public access enabled. If restricting origins, allow `http://127.0.0.1:5173` and your eventual deployment origin. Bond's voice is the voice already selected on the agent; `FISH_BOND_VOICE_ID` is unnecessary for this flow. An API key is only needed for optional standalone Fish transcription ; the public guard also uses its configured voice without credentials.
 
 ## Configure movement
 

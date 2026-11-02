@@ -67,7 +67,7 @@ npm run dev
 
 If `.env` already exists, keep your existing configuration instead of replacing it.
 
-Open **http://127.0.0.1:5174**. The development command starts both Vite and the Express API. Vite forwards `/api` requests to port **3001**. API health is available at **http://127.0.0.1:3001/api/health**. Stop the development servers with **Ctrl+C**.
+Open **http://127.0.0.1:5173**. The development command starts both Vite and the Express API. Vite forwards `/api` requests to port **3001**. API health is available at **http://127.0.0.1:3001/api/health**. Stop the development servers with **Ctrl+C**.
 
 ### Fish Audio configuration
 
@@ -78,7 +78,7 @@ The project connects to these public agents through the Fish Audio Web SDK:
 | Bond | `e8434f5b6cc646c4b426c07d01ebfd72` | `bond_command` |
 | Security guard | `50a6c83da0584763bc7662f6908454a3` | `guard_reaction` |
 
-Both agents must have public access enabled, allow **http://127.0.0.1:5174**, and have their gameplay client tools configured and published. Public conversations use each agent’s configured voice and do not require a browser API key. These IDs refer to the configured project agents; to use your own, update the IDs in the dialogue modules and configure the corresponding tools.
+Both agents must have public access enabled, allow **http://127.0.0.1:5173**, and have their gameplay client tools configured and published. Public conversations use each agent’s configured voice and do not require a browser API key. These IDs refer to the configured project agents; to use your own, update the IDs in the dialogue modules and configure the corresponding tools.
 
 For **Fish speech transcription**, set `FISH_API_KEY` in the local `.env`. Without it, input defaults to browser speech recognition where supported. Both transcription options send the resulting text to the same Fish conversational agents. Allow microphone access, or use typed commands.
 
@@ -121,6 +121,36 @@ The current suite contains **20 tests**, covering strict actions, Fish adapters,
 Browser checks have also exercised voice auto-send, separate typed drafts, mute cancellation, portraits, movement, knockdown audio events, and both end screens with replay resets. Automated voice checks use mocked provider sessions; live conversations depend on the Fish agents’ availability and configuration.
 
 `npm run start:server` starts the API separately. `npm run preview` previews the built frontend; it does not start the API or configure a production deployment. A hosted deployment needs `/api` routing to the backend and its origin allowed on both Fish agents.
+
+## Deploy to Vercel
+
+The repository deploys the Vite frontend and Express API together. `vercel.json`
+builds the frontend into `dist/` and routes `/api/*` to `api/index.ts`, which
+exports the Express app as a Vercel Function. The API only starts its own port
+listener outside Vercel; local development still uses `npm run dev`.
+
+1. Run `npm ci`, `npm test`, and `npm run build`, then push your changes to GitHub.
+2. In Vercel, import the repository with the repository root as the root directory.
+   Use the **Vite** preset, **npm ci** install command, **npm run build** build
+   command, and **dist** output directory.
+3. Add `FISH_API_KEY` in Vercel's environment variables for Fish transcription.
+   Add the optional Fish voice and agent variables from `.env.example` if using
+   the standalone TTS or guard session endpoints. Do not set `PORT` on Vercel.
+   Keep secrets server-side and never prefix them with `VITE_`.
+4. Deploy, then allow the deployed HTTPS origin on **both** Fish Audio agents
+   and publish their updated settings. Allow any preview origins you intend to
+   test as well. Add a custom domain's origin if you later connect one.
+5. Open `https://<your-domain>/api/health` and check for `"status":"ok"`.
+   Open the game and test typed commands, microphone transcription, and both
+   agent conversations. If you change environment variables, redeploy.
+
+Vercel serves the built assets directly; `npm run start:server` and
+`npm run preview` are not production start commands. The Vite development proxy
+is only used locally. The public Fish agent conversations connect directly from
+the browser to Fish Audio.
+
+See [Vercel's Vite documentation](https://vercel.com/docs/frameworks/frontend/vite)
+and [Vercel Functions documentation](https://vercel.com/docs/functions/quickstart).
 
 ## Assets and design
 

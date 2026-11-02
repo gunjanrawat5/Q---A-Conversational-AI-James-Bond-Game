@@ -4,7 +4,7 @@ The game connects to your published guard agent directly through a public Fish A
 
 ## Public connection
 
-The supplied guard ID is `50a6c83da0584763bc7662f6908454a3`. The SDK connects directly using `agentId`, with Public access enabled and `http://127.0.0.1:5174` allowed. The game pins Vite to this port so it does not silently change origins. The agent's configured voice is used; no API key or separate voice ID is required for dialogue. `FISH_API_KEY` is only needed for optional standalone Fish transcription. Legacy private-session and demo backend adapters remain available for tests, but the active guard UI uses this public agent.
+The supplied guard ID is `50a6c83da0584763bc7662f6908454a3`. The SDK connects directly using `agentId`, with Public access enabled and `http://127.0.0.1:5173` allowed. The game pins Vite to this port so it does not silently change origins. The agent's configured voice is used; no API key or separate voice ID is required for dialogue. `FISH_API_KEY` is only needed for optional standalone Fish transcription. Legacy private-session and demo backend adapters remain available for tests, but the active guard UI uses this public agent.
 
 Configure and publish the prompt and `guard_reaction` tool below in Fish. Connection failures return to Q without a demo substitution.
 

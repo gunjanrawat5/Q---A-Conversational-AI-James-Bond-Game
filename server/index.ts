@@ -44,5 +44,7 @@ app.use((error: unknown, _req: express.Request, res: express.Response, _next: ex
   if (error instanceof multer.MulterError) { res.status(error.code === 'LIMIT_FILE_SIZE' ? 413 : 400).json({ error: 'Send one recording under 4 MB.' }); return; }
   res.status(400).json({ error: 'Request could not be processed. Try again or use text.' });
 });
-const port = Number(process.env.PORT ?? 3001);
-app.listen(port, '127.0.0.1', () => console.log(`Heist server listening on http://127.0.0.1:${port}`));
+if (!process.env.VERCEL) {
+  const port = Number(process.env.PORT ?? 3001);
+  app.listen(port, '127.0.0.1', () => console.log(`Heist server listening on http://127.0.0.1:${port}`));
+}
